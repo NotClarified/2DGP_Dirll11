@@ -54,6 +54,7 @@ def init():
     # fill here
 
 def finish():
+
     game_world.clear()
     pass
 
@@ -61,7 +62,9 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-
+    if boy not in game_world.world[1]:
+        print('boy 사망!!!!!')
+        game_framework.quit()  # boy가 삭제된 경우 즉시 종료
 
 def draw():
     clear_canvas()

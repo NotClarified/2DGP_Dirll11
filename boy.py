@@ -170,4 +170,5 @@ class Boy:
         if group == 'boy:zombie':
             print('boy zombie 접촉!!')
             pass
-            # game_world.remove_object(self)
+            game_world.remove_object(self)
+            print('Gameover')
