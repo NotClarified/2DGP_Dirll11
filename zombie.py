@@ -37,10 +37,10 @@ class Zombie:
 
     def get_bb(self):
         # fill here
-        # if self.life == 1:
+         if self.life == 1:
             return self.x - 50, (self.y - 100) * self.life + 50, self.x + 50, (self.y + 100) * self.life
-        # if self.life == 0.5:
-        #     return self.x - 25, (self.y - 100) * self.life, self.x + 25, (self.y + 100) * self.life
+         if self.life == 0.5:
+             return self.x - 25, (self.y - 100) * self.life + 50, self.x + 25, (self.y + 100) * self.life
 
 
     def update(self):
@@ -56,10 +56,16 @@ class Zombie:
 
     def draw(self):
         if self.dir < 0:
-            Zombie.images['Walk'][int(self.frame)].composite_draw(0, 'h', self.x, self.y * self.life, 200 * self.life, 200 * self.life)
+            if self.life == 1:
+                Zombie.images['Walk'][int(self.frame)].composite_draw(0, 'h', self.x, self.y, 200 * self.life, 200 * self.life)
+            else:
+                Zombie.images['Walk'][int(self.frame)].composite_draw(0, 'h', self.x, self.y - 50, 200 * self.life, 200 * self.life)
             draw_rectangle(*self.get_bb())
         else:
-            Zombie.images['Walk'][int(self.frame)].draw(self.x, self.y * self.life, 200 * self.life, 200 * self.life)
+            if self.life == 1:
+                Zombie.images['Walk'][int(self.frame)].draw(self.x, self.y, 200 * self.life, 200 * self.life)
+            else:
+                Zombie.images['Walk'][int(self.frame)].draw(self.x, self.y - 50, 200 * self.life, 200 * self.life)
             draw_rectangle(*self.get_bb())
 
 

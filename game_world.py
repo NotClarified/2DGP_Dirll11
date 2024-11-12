@@ -36,6 +36,9 @@ def clear():
 
 # fill here
 def collide(a, b):
+    if a is None or b is None:
+        return False
+
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -63,12 +66,25 @@ def remove_collision_object(o):
             pairs[0].remove(o)
         if o in pairs[1]:
             pairs[1].remove(o)
+    for group, objects in collision_pairs.items():
+        objects[0] = [a for a in objects[0] if a is not None]
+        objects[1] = [b for b in objects[1] if b is not None]
+
+
+def clean_collision_pairs():
+    pass
 
 
 def handle_collisions():
+    clean_collision_pairs()
     for group, pairs in collision_pairs.items():
-        for a in pairs[0]:
-            for b in pairs[1]:
+        pairs[0] = [a for a in pairs[0] if a is not None]
+        pairs[1] = [b for b in pairs[1] if b is not None]
+
+        for a in pairs[0][:]:
+            for b in pairs[1][:]:
+                if a is None or b is None:  # 객체가 None인 경우 충돌 검사 생략
+                    continue
                 if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
