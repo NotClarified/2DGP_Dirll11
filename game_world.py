@@ -37,18 +37,24 @@ def clear():
 # fill here
 def collide(a, b):
     if a is None or b is None:
+        print("collide: a 또는 b가 None입니다.")  # 디버그 메시지 추가
         return False
 
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
+    try:
+        left_a, bottom_a, right_a, top_a = a.get_bb()
+        left_b, bottom_b, right_b, top_b = b.get_bb()
+    except TypeError as e:
+        print(f"collide: get_bb() 호출 중 오류 발생 - {e}")
+        print(f"a: {a}, b: {b}")
+        return False
 
     if left_a > right_b: return False
     if right_a < left_b: return False
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
     print(f'Collision detected between: {a} and {b}')
-
     return True
+
 
 collision_pairs = {}
 def add_collision_pair(group, a, b):
@@ -66,13 +72,17 @@ def remove_collision_object(o):
             pairs[0].remove(o)
         if o in pairs[1]:
             pairs[1].remove(o)
+        clean_collision_pairs()
+
     for group, objects in collision_pairs.items():
         objects[0] = [a for a in objects[0] if a is not None]
         objects[1] = [b for b in objects[1] if b is not None]
 
 
 def clean_collision_pairs():
-    pass
+    for group, objects in collision_pairs.items():
+        objects[0] = [a for a in objects[0] if a is not None]
+        objects[1] = [b for b in objects[1] if b is not None]
 
 
 def handle_collisions():
